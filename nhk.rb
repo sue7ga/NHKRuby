@@ -46,6 +46,14 @@ class NHK
   return result
  end
 
+ def now_on_air(area,service)
+  @url = self.apikey
+  uri = URI.parse("http://api.nhk.or.jp/v1/pg/now/#{area}/#{service}.json?key=" + @url)
+  json = Net::HTTP.get(uri)
+  result = JSON.parse(json) 
+  return result
+ end
+
  attr_writer :key
 
  def key=(value)
@@ -53,8 +61,6 @@ class NHK
  end 
 
 end
-
-
 
 nhk = NHK.new("UqCm6EDFh00qSArYkKw4MQo9XAvPMiHm")
 
@@ -68,8 +74,11 @@ genre = nhk.genre("130","g1","0000","2014-05-13")
 
 info = nhk.info('130','g1','2014051304965')
 
-puts info['list']['g1'][0]['area']['name']
+#puts info['list']['g1'][0]['area']['name']
 
+now_on_air = nhk.now_on_air('130','g1')
+
+puts now_on_air['nowonair_list']['g1']['previous']['area']['name']
 
 
 
