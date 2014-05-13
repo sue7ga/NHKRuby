@@ -1,0 +1,29 @@
+class NHK
+
+ def initialize(args = "hoge")
+  @key = args
+ end
+
+ def show
+  print "Apikey is ,@key,\n"
+ end
+  
+ attr_reader :apikey
+
+ def apikey 
+  return @key
+ end
+
+ attr_writer :key
+
+ def key=(value)
+   @key = value
+ end 
+
+end
+
+
+nhk = NHK.new("132dfasdu")
+
+p nhk.show
+
