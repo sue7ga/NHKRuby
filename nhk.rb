@@ -1,28 +1,33 @@
+require 'net/http'
+require 'uri'
 require 'json'
 
 class NHK
 
  def initialize(args = "hoge")
-  @key = args
+   @key = args
  end
 
  def show
-  print "Apikey is ,@key,\n"
+   print "Apikey is ,@key,\n"
  end
   
  attr_reader :apikey
 
  def apikey 
-  return @key
+   return @key
  end
 
  def url
-  "http://nhk.jp" + @key
+   "http://nhk.jp" + @key
  end
 
  def list(area,service,date)
    @url = self.apikey
-   JSON.parse("http://api.nhk.or.jp/v1/pg/list/#{area}/#{service}/#{date}.json?key=" + @url)
+   uri = URI.parse("http://api.nhk.or.jp/v1/pg/list/#{area}/#{service}/#{date}.json?key=" + @url)
+   json = Net::HTTP.get(uri)
+   result = JSON.parse(json)
+   return result
  end
 
  attr_writer :key
@@ -35,7 +40,11 @@ end
 
 nhk = NHK.new("UqCm6EDFh00qSArYkKw4MQo9XAvPMiHm")
 
-p nhk.list("130","g1","2014-05-13")
+list = nhk.list("130","g1","2014-05-13")
+
+puts list['list']['g1'][3]['subtitle']
+
+
 
 
 
