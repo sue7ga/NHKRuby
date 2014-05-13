@@ -38,7 +38,13 @@ class NHK
   return result
  end
 
- 
+ def info(area,service,id)
+  @url = self.apikey
+  uri = URI.parse("http://api.nhk.or.jp/v1/pg/info/#{area}/#{service}/#{id}.json?key=" + @url)
+  json = Net::HTTP.get(uri)
+  result = JSON.parse(json)
+  return result
+ end
 
  attr_writer :key
 
@@ -58,10 +64,11 @@ list = nhk.list("130","g1","2014-05-13")
 
 genre = nhk.genre("130","g1","0000","2014-05-13")
 
-puts genre['list']['g1'][1]['service']['name']
+#puts genre['list']['g1'][1]['service']['name']
 
+info = nhk.info('130','g1','2014051304965')
 
-
+puts info['list']['g1'][0]['area']['name']
 
 
 
